@@ -70,7 +70,7 @@ router.post('/register', async (req, res) => {
             from: process.env.EMAIL_USER,
             to: user.email,
             subject: 'Email Verification',
-            text: `Please verify your email by clicking the following link: https://angelikamaglinte.github.io/FlexWorkspace/verify-email?token=${token}`,
+            text: `Please verify your email by clicking the following link: https://flexworkspace-backend.onrender.com/api/auth/verify-email?token=${token}`,
           };
 
           transporter.sendMail(mailOptions, (error, info) => {
@@ -89,6 +89,32 @@ router.post('/register', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+// Verify email
+router.get('/verify-email', async (req, res) => {
+  const token = req.query.token;
+
+  try {
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    // Find user and update verification status
+    let user = await User.findById(decoded.user.id);
+    if (!user) {
+      return res.status(400).json({ msg: 'Invalid token' });
+    }
+
+    user.isVerified = true;
+    await user.save();
+
+    res.status(200).send('Email verified successfully');
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 
 
 module.exports = router;
