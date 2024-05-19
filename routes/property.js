@@ -11,17 +11,17 @@ router.post('/', [
   [
     check('address', 'Address is required').not().isEmpty(),
     check('neighborhood', 'Neighborhood is required').not().isEmpty(),
-    check('squareFeet', 'Square Feet is required').isInt({ min: 1 }),
+    check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
   ],
 ], async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
-  const { address, neighborhood, squareFeet, parkingGarage, publicTransport } = req.body;
-
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { address, neighborhood, squareFeet, parkingGarage, publicTransport } = req.body;
+
     const newProperty = new Property({
       host: req.user.id,
       address,
@@ -32,10 +32,10 @@ router.post('/', [
     });
 
     const property = await newProperty.save();
-    res.json(property);
+    res.status(201).json(property); // Return the newly created property
   } catch (error) {
     console.error(error.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ message: 'Server Error' }); // Return a generic server error message
   }
 });
 
@@ -46,7 +46,7 @@ router.get('/', authMiddleware, async (req, res) => {
     res.json(properties);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ message: 'Server Error' });
   }
 });
 
