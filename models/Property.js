@@ -4,28 +4,28 @@ const PropertySchema = new mongoose.Schema({
   host: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   address: {
     type: String,
-    required: true
+    required: true,
   },
   neighborhood: {
     type: String,
-    required: true
+    required: true,
   },
   squareFeet: {
     type: Number,
-    required: true
+    required: true,
   },
   parkingGarage: {
     type: Boolean,
-    default: false
+    default: false,
   },
   publicTransport: {
     type: Boolean,
-    default: false
-  }
-}, { timestamps: true });
+    default: false,
+  },
+});
 
 module.exports = mongoose.model('Property', PropertySchema);
