@@ -117,47 +117,90 @@ router.get('/verify-email', async (req, res) => {
 });
 
 // User login
+// router.post('/login', async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     // Check if user exists
+//     let user = await User.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({ msg: 'Invalid credentials' });
+//     }
+
+//     // Check if password is correct
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     if (!isMatch) {
+//       return res.status(400).json({ msg: 'Invalid credentials' });
+//     }
+
+//     // Check if user is verified
+//     if (!user.isVerified) {
+//       return res.status(400).json({ msg: 'Email not verified' });
+//     }
+
+//     // Generate JWT
+//     const payload = {
+//       user: {
+//         id: user.id,
+//         role: user.role // Include user's role
+//       },
+//     };
+//     jwt.sign(
+//       payload,
+//       process.env.JWT_SECRET,
+//       { expiresIn: 360000 },
+//       (err, token) => {
+//         if (err) throw err;
+//         res.json({ token });
+//       }
+//     );
+
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server error');
+//   }
+// });
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Check if user exists
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    // Check if password is correct
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
-
-    // Check if user is verified
-    if (!user.isVerified) {
-      return res.status(400).json({ msg: 'Email not verified' });
-    }
-
-    // Generate JWT
-    const payload = {
-      user: {
-        id: user.id,
-        role: user.role // Include user's role
-      },
-    };
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: 360000 },
-      (err, token) => {
-        if (err) throw err;
-        res.json({ token });
+      // Check if user exists
+      let user = await User.findOne({ email });
+      if (!user) {
+          return res.status(400).json({ msg: 'Invalid credentials' });
       }
-    );
+
+      // Check if password is correct
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+          return res.status(400).json({ msg: 'Invalid credentials' });
+      }
+
+      // Check if user is verified
+      if (!user.isVerified) {
+          return res.status(400).json({ msg: 'Email not verified' });
+      }
+
+      // Generate JWT with user ID and role
+      const payload = {
+          user: {
+              id: user.id,
+              role: user.role // Include user's role in the payload
+          }
+      };
+      jwt.sign(
+          payload,
+          process.env.JWT_SECRET,
+          { expiresIn: 360000 },
+          (err, token) => {
+              if (err) throw err;
+              res.json({ token });
+          }
+      );
 
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+      console.error(err.message);
+      res.status(500).send('Server error');
   }
 });
 
