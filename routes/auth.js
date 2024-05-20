@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware')
 
 // Load environment variables
 require('dotenv') 
@@ -162,6 +163,22 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Fetch user information (avatar name)
+router.get('/user', authMiddleware, async (req, res) => {
+  try {
+    // Fetch user information based on the user ID extracted from the authentication token
+    const user = await User.findById(req.user.id).select('-password');
 
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Return user information
+    res.json(user);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ msg: 'Server Error' });
+  }
+})
 
 module.exports = router;
