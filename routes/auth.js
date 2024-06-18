@@ -11,7 +11,8 @@ require('dotenv')
 
 // Register new user
 router.post('/register', async (req, res) => {
-  const { name, email, password, role } = req.body;
+  // const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   try {
     // Check if user already exists
@@ -24,8 +25,8 @@ router.post('/register', async (req, res) => {
     user = new User({
       name,
       email,
-      password,
-      role
+      password
+      // role
     });
 
     // Hash password
@@ -38,8 +39,8 @@ router.post('/register', async (req, res) => {
     // Generate JWT
     const payload = {
       user: {
-        id: user.id,
-        role: user.role
+        id: user.id
+        // role: user.role
       },
     };
 
@@ -143,8 +144,8 @@ router.post('/login', async (req, res) => {
       // Generate JWT with user ID and role
       const payload = {
           user: {
-              id: user.id,
-              role: user.role // Include user's role in the payload
+              id: user.id
+              // role: user.role // Include user's role in the payload
           }
       };
       jwt.sign(
