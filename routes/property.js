@@ -50,4 +50,15 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
+// Fetch properties for all hosts
+router.get('/', async (req, res) => {
+  try {
+      const properties = await Property.find();
+      res.json(properties);
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 module.exports = router;
