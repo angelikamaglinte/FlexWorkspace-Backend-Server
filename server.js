@@ -22,6 +22,7 @@ mongoose.connect(process.env.MONGODB_URI);
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/property', require('./routes/property'));
+app.use('/api/properties', require('./routes/properties'))
 
 // Use auth.js middleware for /api/auth routes
 app.use('/api/auth', require('./middleware/auth'));
