@@ -14,6 +14,18 @@ const PropertySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  city: {
+    type: String,
+    required: true
+  },
+  province: {
+    type: String,
+    required: true
+  },
+  workspaceType: {
+    type: String,
+    required: true
+  },
   squareFeet: {
     type: Number,
     required: true,
