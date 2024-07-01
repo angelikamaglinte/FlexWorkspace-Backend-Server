@@ -28,7 +28,15 @@ const PropertySchema = new mongoose.Schema({
   },
   squareFeet: {
     type: Number,
-    required: true,
+    required: true
+  },
+  leaseTerm: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
   },
   parkingGarage: {
     type: Boolean,

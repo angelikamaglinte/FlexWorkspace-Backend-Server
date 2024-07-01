@@ -20,7 +20,7 @@ router.post('/', [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { address, neighborhood, city, province, workspaceType, squareFeet, parkingGarage, publicTransport } = req.body;
+    const { address, neighborhood, city, province, workspaceType, squareFeet, price, parkingGarage, publicTransport } = req.body;
 
     const newProperty = new Property({
       host: req.user.id,
@@ -30,6 +30,8 @@ router.post('/', [
       province,
       workspaceType,
       squareFeet,
+      leaseTerm,
+      price,
       parkingGarage,
       publicTransport,
     });
