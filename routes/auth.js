@@ -12,7 +12,7 @@ require('dotenv')
 // Register new user
 router.post('/register', async (req, res) => {
   // const { name, email, password, role } = req.body;
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   try {
     // Check if user already exists
