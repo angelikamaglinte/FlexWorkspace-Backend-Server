@@ -46,6 +46,9 @@ const PropertySchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  images: {
+    type: [String], // Array of image URLs
+  },
 });
 
 module.exports = mongoose.model('Property', PropertySchema);
