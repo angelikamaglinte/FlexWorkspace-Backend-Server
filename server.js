@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve static files from the "uploads" directory for uploaded files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
 
