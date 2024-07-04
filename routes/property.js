@@ -5,13 +5,53 @@ const Property = require('../models/Property');
 
 const router = express.Router();
 
-// Add new property
+// // Add new property
+// router.post('/', [
+//   authMiddleware,
+//   [
+//     check('address', 'Address is required').not().isEmpty(),
+//     check('neighborhood', 'Neighborhood is required').not().isEmpty(),
+//     check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
+//   ],
+// ], async (req, res) => {
+//   try {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty()) {
+//       console.log('Validation errors:', errors.array()); // Log validation errors
+//       return res.status(400).json({ errors: errors.array() });
+//     }
+
+//     const { address, neighborhood, city, province, workspaceType, squareFeet, leaseTerm, price, parkingGarage, publicTransport } = req.body;
+
+//     console.log('Received data:', req.body); // Log received data for debugging
+//     const newProperty = new Property({
+//       host: req.user.id,
+//       address,
+//       neighborhood,
+//       city,
+//       province,
+//       workspaceType,
+//       squareFeet,
+//       leaseTerm,
+//       price,
+//       parkingGarage,
+//       publicTransport,
+//     });
+
+//     const property = await newProperty.save();
+//     res.status(201).json(property); // Return the newly created property
+//   } catch (error) {
+//     console.error(error.message);
+//     res.status(500).json({ message: 'Server Error' }); // Return a generic server error message
+//   }
+// });
+
 router.post('/', [
   authMiddleware,
   [
-    // check('address', 'Address is required').not().isEmpty(),
-    // check('neighborhood', 'Neighborhood is required').not().isEmpty(),
-    // check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
+    check('address', 'Address is required').not().isEmpty(),
+    check('neighborhood', 'Neighborhood is required').not().isEmpty(),
+    check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
   ],
 ], async (req, res) => {
   try {
@@ -23,7 +63,6 @@ router.post('/', [
 
     const { address, neighborhood, city, province, workspaceType, squareFeet, leaseTerm, price, parkingGarage, publicTransport } = req.body;
 
-    console.log('Received data:', req.body); // Log received data for debugging
     const newProperty = new Property({
       host: req.user.id,
       address,
@@ -41,10 +80,11 @@ router.post('/', [
     const property = await newProperty.save();
     res.status(201).json(property); // Return the newly created property
   } catch (error) {
-    console.error(error.message);
-    res.status(500).json({ message: 'Server Error' }); // Return a generic server error message
+    console.error('Server error:', error); // Log detailed error
+    res.status(500).json({ message: 'Server Error', error: error.message }); // Return error message
   }
 });
+
 
 // Fetch properties by host ID
 router.get('/', authMiddleware, async (req, res) => {
