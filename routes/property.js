@@ -5,62 +5,7 @@ const Property = require('../models/Property');
 
 const router = express.Router();
 
-const multer = require('multer'); // Add multer for handling file uploads
-const path = require('path');
-
-// Configure multer for file storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/uploads'); // Destination folder for uploaded files
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, `${Date.now()}${ext}`); // Unique filename
-  }
-});
-const upload = multer({ storage });
-
-// // Add new property
-// router.post('/', [
-//   authMiddleware,
-//   [
-//     check('address', 'Address is required').not().isEmpty(),
-//     check('neighborhood', 'Neighborhood is required').not().isEmpty(),
-//     check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
-//   ],
-// ], async (req, res) => {
-//   try {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       console.log('Validation errors:', errors.array()); // Log validation errors
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     const { address, neighborhood, city, province, workspaceType, squareFeet, leaseTerm, price, parkingGarage, publicTransport } = req.body;
-
-//     console.log('Received data:', req.body); // Log received data for debugging
-//     const newProperty = new Property({
-//       host: req.user.id,
-//       address,
-//       neighborhood,
-//       city,
-//       province,
-//       workspaceType,
-//       squareFeet,
-//       leaseTerm,
-//       price,
-//       parkingGarage,
-//       publicTransport,
-//     });
-
-//     const property = await newProperty.save();
-//     res.status(201).json(property); // Return the newly created property
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({ message: 'Server Error' }); // Return a generic server error message
-//   }
-// });
-
+// Add new property
 router.post('/', [
   authMiddleware,
   [
@@ -78,6 +23,7 @@ router.post('/', [
 
     const { address, neighborhood, city, province, workspaceType, squareFeet, leaseTerm, price, parkingGarage, publicTransport } = req.body;
 
+    console.log('Received data:', req.body); // Log received data for debugging
     const newProperty = new Property({
       host: req.user.id,
       address,
@@ -95,10 +41,11 @@ router.post('/', [
     const property = await newProperty.save();
     res.status(201).json(property); // Return the newly created property
   } catch (error) {
-    console.error('Server error:', error); // Log detailed error
-    res.status(500).json({ message: 'Server Error', error: error.message }); // Return error message
+    console.error(error.message);
+    res.status(500).json({ message: 'Server Error' }); // Return a generic server error message
   }
 });
+
 
 
 // Fetch properties by host ID
