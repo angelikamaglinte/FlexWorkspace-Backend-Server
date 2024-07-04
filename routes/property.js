@@ -5,6 +5,21 @@ const Property = require('../models/Property');
 
 const router = express.Router();
 
+const multer = require('multer'); // Add multer for handling file uploads
+const path = require('path');
+
+// Configure multer for file storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads'); // Destination folder for uploaded files
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `${Date.now()}${ext}`); // Unique filename
+  }
+});
+const upload = multer({ storage });
+
 // // Add new property
 // router.post('/', [
 //   authMiddleware,
