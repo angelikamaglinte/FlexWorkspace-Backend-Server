@@ -17,11 +17,13 @@ router.post('/', [
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array()); // Log validation errors
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { address, neighborhood, city, province, workspaceType, squareFeet, leaseTerm, price, parkingGarage, publicTransport } = req.body;
 
+    console.log('Received data:', req.body); // Log received data for debugging
     const newProperty = new Property({
       host: req.user.id,
       address,
