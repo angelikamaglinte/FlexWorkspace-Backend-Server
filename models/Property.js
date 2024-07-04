@@ -46,6 +46,10 @@ const PropertySchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  image: {
+    type: String, // URL to the uploaded image
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('Property', PropertySchema);

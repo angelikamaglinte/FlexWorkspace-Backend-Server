@@ -7,6 +7,8 @@ const cors = require('cors');
 require('dotenv').config();
 const path = require('path'); // Import the path module
 
+const multer = require('multer'); // Import multer
+
 const app = express();
 
 // Middleware
@@ -15,10 +17,19 @@ app.use(bodyParser.json());
 
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve files from the "uploads" directory
 
-// // Serve static files from the "uploads" directory for uploaded files
-// app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Multer setup for handling file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '-' + file.originalname);
+  },
+});
 
+const upload = multer({ storage: storage });
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
 
