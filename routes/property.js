@@ -9,9 +9,9 @@ const router = express.Router();
 router.post('/', [
   authMiddleware,
   [
-    check('address', 'Address is required').not().isEmpty(),
-    check('neighborhood', 'Neighborhood is required').not().isEmpty(),
-    check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
+    // check('address', 'Address is required').not().isEmpty(),
+    // check('neighborhood', 'Neighborhood is required').not().isEmpty(),
+    // check('squareFeet', 'Square Feet must be a positive integer').isInt({ min: 1 }),
   ],
 ], async (req, res) => {
   try {
